@@ -10,7 +10,7 @@ export default function HomeScreen({ navigation } : { navigation: any }) {
   return (
     <View style={styles.container}>
       <Map openBuilding={openBuilding} />
-      <BottomDrawer />
+      <BottomDrawer navigation={navigation} />
     </View>
   );
 }
@@ -18,6 +18,5 @@ export default function HomeScreen({ navigation } : { navigation: any }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
   }
 });

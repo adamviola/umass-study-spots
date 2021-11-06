@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
-const building_locations = {
+export const building_locations = {
   'Integ. Learning Center': {
     latitude: 42.39097186929115,
     longitude: -72.52587529127199
-  }
+  },
+  'Skinner Hall': {
+    latitude: 42.39156900565004,
+    longitude: -72.52479813528295
+  },
+
 }
 
 export default function Map({ openBuilding } : { openBuilding: () => void }) {
@@ -30,7 +35,7 @@ export default function Map({ openBuilding } : { openBuilding: () => void }) {
         showsIndoors={false}
         rotateEnabled={false}
         pitchEnabled={false}
-        minZoomLevel={13}
+        minZoomLevel={15}
         onRegionChange={region => {
           if (showText && region.latitudeDelta > zoomThreshold)
             setShowText(false);
@@ -56,9 +61,8 @@ export default function Map({ openBuilding } : { openBuilding: () => void }) {
                 }}
               />
               {showText ? <Text style={{ paddingLeft: 5}}>{building}</Text> : null}
-              <Callout tooltip={true} /> 
-              
             </View>
+            <Callout tooltip={true} /> 
           </Marker>
         ))}
       </MapView>
