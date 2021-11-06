@@ -1,21 +1,26 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import BottomDrawer from './components/BottomDrawer';
-import Map from './components/Map'
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './screens/HomeScreen';
+import BuildingScreen from './screens/BuildingScreen';
+import RoomScreen from './screens/RoomScreen';
+
+const RootStack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Map />
-      <BottomDrawer />
-    </View>
+    <NavigationContainer>
+      <RootStack.Navigator>
+        <RootStack.Group>
+          <RootStack.Screen name="Home" component={HomeScreen} />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <RootStack.Screen name="Building" component={BuildingScreen} />
+          <RootStack.Screen name="Room" component={RoomScreen} />
+        </RootStack.Group>
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-  }
-});
