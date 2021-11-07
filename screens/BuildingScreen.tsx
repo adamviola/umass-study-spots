@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, Button, Pressable, Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { DBContext } from '../components/DBProvider';
+import { DBContext } from '../providers/DBProvider';
 import { AntDesign } from '@expo/vector-icons';
 import { fixed_time, fixed_day } from '../time';
 
@@ -66,10 +66,10 @@ export default function BuildingScreen({ navigation, route } : { navigation: any
       if (meeting.start > time) {
         room_times.set(room, time_diff(time, meeting.start)); // Negative of available time
       } else {
-        while (i < meetings.length - 1 && meeting.end <= meetings[i + 1].start - 15 && meetings[i + 1].room == room) {
+        while (i < meetings.length - 1 && time_diff(meetings[i + 1].start, meetings[i].end) <=  15 && meetings[i + 1].room == room) {
           i++;
         }
-        room_times.set(room, time_diff(meeting.end, time)); // Time until available for > 15 minutes
+        room_times.set(room, time_diff(meetings[i].end, time)); // Time until available for > 15 minutes
       }
       while (i < meetings.length - 1 && meetings[i + 1].room == room) {
         i++;

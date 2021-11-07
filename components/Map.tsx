@@ -4,7 +4,7 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export const building_locations = {
-  '358North Pleasant St': { latitude: 42.38276595572954, longitude: -72.52081439382047 },
+  '358 North Pleasant St': { latitude: 42.38276595572954, longitude: -72.52081439382047 },
     'Ag. Engin. Bldg Annex B': { latitude: 42.39221267518042, longitude: -72.53104355442055 },
     'Ag. Engineering Bldg': { latitude: 42.391921330363225, longitude: -72.531113169045 }, 
     'Arnold': { latitude: 42.39446716992463, longitude: -72.52608797403809 },
@@ -42,7 +42,7 @@ export const building_locations = {
     'Holdsworth Hall': { latitude: 42.392900587385576, longitude: -72.53088478497955 },
     'Honors College Bldg': { latitude: 42.38822292234079, longitude: -72.53054366038461 },
     'Integ. Learning Center': { latitude: 42.39095989701627, longitude: -72.52602903372508 },
-    'Integ. Lrng Cntr TVStudio': { latitude: 42.39095989701627, longitude: -72.52602903372508 }, 
+    'Integ. Lrng Cntr TV Studio': { latitude: 42.39091136481255, longitude: -72.52563086821537 },
     'Integrated Sciences Bldg': { latitude:  42.39229033483435, longitude: -72.52497441062756 },
     'James House': { latitude: 42.3841471106763, longitude: -72.53119713609684 },
     'John Olver Design Bldg': { latitude: 42.38821534042515, longitude: -72.5234700823853 },
@@ -74,7 +74,7 @@ export const building_locations = {
     'Tobin Hall': { latitude: 42.38751299384624, longitude: -72.52956798933934 },
     'Totman Phys. Ed. Bldg.': { latitude: 42.39612299245814, longitude: -72.52596591351633 },
     'Van Meter House': { latitude: 42.38986384938876, longitude: -72.51837958580205 },
-    'Wheeler hall': { latitude: 42.38887465091615, longitude: -72.52130022460402 },
+    'Wheeler Hall': { latitude: 42.38887465091615, longitude: -72.52130022460402 },
 }
 
 export default function Map({ openBuilding } : { openBuilding: (building: string) => void }) {

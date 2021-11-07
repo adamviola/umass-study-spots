@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
-import BottomSheet, { BottomSheetFlatList, BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { Button, Dimensions, StyleSheet, Text, View, TextInput, FlatList, Keyboard, TouchableNativeFeedback, Pressable } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
+import {  Dimensions, StyleSheet, Text, View, TextInput, FlatList, Keyboard, TouchableNativeFeedback, Pressable, ScrollView } from 'react-native';
 import { building_locations } from './Map';
-import * as Location from 'expo-location';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { FavoritesContext } from '../providers/FavoritesProvider';
 
 export default function BottomDrawer({ navigation } : { navigation: any}) {
-  const snapPoints = useMemo(() => [40 + 20 + 24, '90%'], []);
+  const [favorites, isFavorite, toggleFavorite] = useContext(FavoritesContext)
+  const snapPoints = useMemo(() => [40 + 65 + 22 * 3, '95%'], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [search, setSearch] = useState('');
   const drawerIndex = useRef(0);
@@ -57,6 +57,20 @@ export default function BottomDrawer({ navigation } : { navigation: any}) {
           clearButtonMode='always'
           onFocus={() => bottomSheetRef.current?.snapToIndex(1)}
         />
+        <ScrollView horizontal={true} style={styles.favorites}>
+          {favorites.map((favorite, index) => {
+            let [building, r] = favorite.split(';');
+            const room = r == 'undefined' ? undefined : r;
+            return (
+              <Pressable key={index} onPress={() => navigation.navigate( room ? 'Room' : 'Building', { building, room })}>
+                <View style={styles.favorite}>
+                  <Text style={styles.buildingText}>{building}</Text>
+                  {room ? <Text style={styles.roomText}>{room}</Text> : null}
+                </View>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
         <FlatList
           style={styles.list}
           data={buildings.current}
@@ -78,7 +92,8 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     padding: 10,
     borderRadius: 8,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    fontSize: 16,
     // backgroundColor: '#f2f2f2',
   },
   item: {
@@ -106,7 +121,34 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   list: {
-    height: Dimensions.get('window').height * 0.9 - 40 - 24 - 20
-    // backgroundColor: '#f2f2f2'
+    height: Dimensions.get('window').height * 0.95 - 40 - 22 * 3 - 65,
+  },
+  favorites: {
+    width: '90%',
+    height: 65,
+    marginLeft: '5%',
+    marginBottom: 22,
+  },
+  favorite: {
+    height: '100%',
+    width: 200,
+    borderRadius: 8,
+    marginRight: 22,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buildingText: {
+    fontSize: 18,
+    paddingLeft: 16,
+    paddingTop: 12,
+    fontWeight: 'bold',
+    flex: 1
+  },
+  roomText: {
+    paddingRight: 16,
+    paddingTop: 12,
+    paddingLeft: 8,
+    fontSize: 18,
   }
 });

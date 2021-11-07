@@ -1,11 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, Dimensions, ScrollView } from 'react-native';
-import BottomDrawer from '../components/BottomDrawer';
-import { DBContext } from '../components/DBProvider';
-import Map from '../components/Map'
+import { DBContext } from '../providers/DBProvider';
 import { fixed_day, fixed_time } from '../time';
 
-const ITEM_HEIGHT = 120;
+const ITEM_HEIGHT = 100;
 const GRAY = '#C0C0C0'
 
 function Meeting({ subject, number, start, end }: { subject: string, number: string, start: number, end: number}) {
@@ -14,6 +12,30 @@ function Meeting({ subject, number, start, end }: { subject: string, number: str
   const end_h = Math.floor(end / 100);
   const end_m = end % 100;
 
+  let start_time = ':';
+  if (start_h == 0)
+    start_time = '12' + start_time;
+  else if (start_h > 12)
+    start_time = (start_h - 12) + start_time;
+  else
+    start_time = start_h + start_time;
+  if (start_m < 10)
+    start_time = start_time + '0';
+  start_time += start_m;
+  start_time += start_h < 12 ? 'am' : 'pm';
+
+  let end_time = ':';
+  if (end_h == 0)
+    end_time = '12' + end_time;
+  else if (end_h > 12)
+    end_time = (end_h - 12) + end_time;
+  else
+    end_time = end_h + end_time;
+  if (end_m < 10)
+    end_time = end_time + '0';
+  end_time += end_m;
+  end_time += end_h < 12 ? 'am' : 'pm';
+
   const style = {
     top: ITEM_HEIGHT / 2 + ITEM_HEIGHT * start_h + start_m / 60 * ITEM_HEIGHT,
     height: (end_h - start_h) * ITEM_HEIGHT + (end_m - start_m) / 60 * ITEM_HEIGHT,
@@ -21,7 +43,8 @@ function Meeting({ subject, number, start, end }: { subject: string, number: str
   }
   return (
     <View style={style}>
-
+      <Text style={styles.courseText}>{`${subject} ${number}`}</Text>
+      <Text style={styles.timeText} >{`${start_time} - ${end_time}`}</Text>
     </View>
   )
 }
@@ -49,11 +72,6 @@ export default function RoomScreen({ route } : { route: any }) {
   const minutes = fixed_time % 100;
 
   return (
-    <>
-    {/* <FlatList style={{backgroundColor: '#F4F4F4'}} initialScrollIndex={9} data={data} renderItem={renderItem} keyExtractor={(item, index) => item.toString()} getItemLayout={(data, index) => (
-      {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
-    )} /> */}
-    {/* <View style={{ position: 'absolute', top: 0, backgroundColor: 'red', height: 20, width: 20}} ></View> */}
     <ScrollView contentOffset={{x: 0, y: hours * ITEM_HEIGHT}}>
       {data.map((item, index) => renderItem({ item, index }))}
       {meetings.map((item, index) => (<Meeting {...item} key={index} />))}
@@ -62,7 +80,6 @@ export default function RoomScreen({ route } : { route: any }) {
         <View style={styles.bar} />
       </View>
     </ScrollView>
-    </>
   );
 }
 
@@ -95,7 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     left: '22.5%',
     position: 'absolute',
-    backgroundColor: GRAY,
+    backgroundColor: '#F0F0F0',
   },
   current: {
     height: 8,
@@ -115,5 +132,15 @@ const styles = StyleSheet.create({
     width: 8,
     borderRadius: 4,
     backgroundColor: 'red'
-  }
+  },
+  courseText: {
+    fontSize: 18,
+    padding: 8,
+    paddingBottom: 4,
+    fontWeight: 'bold',
+  },
+  timeText: {
+    fontSize: 16,
+    paddingLeft: 8,
+  },
 });

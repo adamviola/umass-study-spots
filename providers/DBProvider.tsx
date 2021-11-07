@@ -14,12 +14,18 @@ async function openDatabase(): Promise<SQLite.WebSQLDatabase> {
   }
 
   // Only load move database to document directory if it doesn't exist
-  if (!(await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite/meetings.db`)).exists) {
-    await FileSystem.downloadAsync(
-      Asset.fromModule(require('../assets/meetings.db')).uri,
-      FileSystem.documentDirectory + 'SQLite/meetings.db'
-    );
-  }
+
+  const dbFile = Asset.fromModule(require('../assets/meetings.db'))
+  const path = `${FileSystem.documentDirectory}SQLite/meetings.db`
+  const dbCheck = await FileSystem.getInfoAsync(path, { md5: true });
+  if (!dbCheck.exists) {
+    console.log('db not found')
+    await FileSystem.downloadAsync(dbFile.uri, path);
+  } else if (dbCheck.md5 !== dbFile.hash) {
+    console.log('new db found')
+    await FileSystem.deleteAsync(path);
+    await FileSystem.downloadAsync(dbFile.uri, path);
+  };
 
   return SQLite.openDatabase('meetings.db');
 }
