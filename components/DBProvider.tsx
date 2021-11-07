@@ -34,7 +34,7 @@ export const DBProvider = ({ children } : { children: any }) => {
   const query = useCallback((q, callback) => {
     if (database) {
       database.transaction((tx: any) => {
-        tx.executeSql(q, [], (transaction: any, results: any) => callback(results.rows._array));
+        tx.executeSql(q, [], (transaction: any, results: any) => callback(results.rows._array), (tx: any, error: any) => console.log(error));
       });
     } else {
       callback([]);

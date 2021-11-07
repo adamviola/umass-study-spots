@@ -5,7 +5,7 @@ import Map from '../components/Map'
 
 
 export default function HomeScreen({ navigation } : { navigation: any }) {
-  const openBuilding = () => navigation.navigate('Building');
+  const openBuilding = (building: string) => navigation.navigate('Building', { building: building });
 
   return (
     <View style={styles.container}>
